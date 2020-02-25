@@ -1,29 +1,23 @@
-// #include <iostream>
 #include "graph.hpp"
-
-template <typename T>
-std::ostream& operator << (std::ostream& os,const Graph<T>& graph)
-{
-
-	os<< "Adjacency list :" << std::endl;
-	for(auto v: graph.get_vertices())
-	{
-		os << v.get_data() << " :";
-		for(auto edge: v.get_out_edges())
-		{
-			os << edge.get_target().get_data() << ", ";
-		}
-		os << std::endl;
-	}
-	return os;
-}
 
 
 int main()
 {
-	Graph<std::string>* graph = new Graph<std::string>();
-	graph->add_vertex("A");
-	graph->add_vertex("B");
+	Graph<std::string>* graph = new Graph<std::string>(true);
+	size_t v0_id = graph->add_vertex("A");
+	size_t v1_id  = graph->add_vertex("B");
+
+	Graph<std::string>::VertexList graph_vertices = graph->get_vertices();
+
+	// for(auto v: graph_vertices)
+	// {
+	// 	std::cout << v.get_id() << std::endl;
+	// }
 	std::cout << *graph << std::endl;
+
+	graph->add_edge(v0_id, v1_id);
+
+	std::cout << *graph << std::endl;
+
 	return 0;
 }
