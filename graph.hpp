@@ -1,49 +1,1 @@
-#pragma once
-
-/*
-	a graph data structure represented as adjacency list
-*/
-template <typename T>
-class Graph
-{
-
-public:
-	Graph(bool is_directed = false) : m_directed(is_directed){};
-	 
-
-private:
-	class Vertex;
-	class Edge;
-
-	using VertexList = std::vector<Vertex>;
-	using OutEdgeList = std::std::vector<Edge>;
-	const bool m_directed;
-	GraphVertices vertices;
-
-
-	class Edge
-	{
-	public:
-		Edge(/*const Vertex& source, */const Vertex& target, int weight = 1) :
-			/*m_source(source),*/ m_target(target), m_weight(weight){}
-
-	private:
-		/*Vertex m_source;*/
-  		Vertex m_target;
-  		int m_weight;
-	}
-
-	class Vertex
-	{
-	public:
-		Vertex(T data, unsigned int id) : m_data(data), m_id(id){}
-		void addEdge(Vertex target, int weight);
-		const VertexEdges& getOutEdges() const {return m_edges;}
-	private:
-		T m_data;
-		unsigned int m_id;
-		VertexEdges m_edges;
-	}
-
-}
-
+// #include <algorithm>#include <vector>#include <iostream>#include <string>#include <ostream>/*	a graph data structure represented as adjacency list*/#pragma oncetemplate <typename T>class Graph{private:	class Vertex;	class Edge;	using OutEdgeList = std::vector<Edge>;	using VertexList = std::vector<Vertex>;public:	Graph(bool is_directed = false) : m_directed(is_directed){};	bool add_vertex(T data);	bool add_edge(T source_data, T target_data);	unsigned int get_next_id(){ return cur_id++; };	const VertexList& get_vertices() const { return m_vertices; };	template <typename F>	friend std::ostream& operator << (std::ostream& os, const Graph<F>& graph);private:	const bool m_directed;	VertexList m_vertices;	static unsigned int cur_id;	class Edge	{	public:		Edge(/*const Vertex& source, */const Vertex& target, int weight = 1) :			/*m_source(source),*/ m_target(target), m_weight(weight){}		const Vertex& get_target() const { return m_target; };	private:		/*Vertex m_source;*/  		Vertex m_target;  		int m_weight;	};	class Vertex	{	public:		Vertex(T data, unsigned int id) : m_data(data), m_id(id){};		const T& get_data() const { return m_data; };		void add_edge(Vertex target, int weight);		const OutEdgeList& get_out_edges() const { return m_edges; };	private:		T m_data;		unsigned int m_id;		OutEdgeList m_edges;	};};template <typename T>unsigned int Graph<T>::cur_id = 0;template <typename T>inline bool Graph<T>::add_vertex(T data){	m_vertices.push_back(Graph<T>::Vertex(data, cur_id++));	return true;}template <typename T>inline void Graph<T>::Vertex::add_edge(Vertex target, int weight){	m_edges.push_back(Graph<T>::Edge(target, weight));}/*template <typename T>inline std::ostream& operator << (std::ostream& os, const Graph<T>& graph){	os<< "Adjacency list :" << std::endl;	for(auto v: graph.get_vertices())	{		os << v.get_data() << " :";		for(auto v2: v.get_out_edges())		{			os << v2.get_data() << ", ";		}		os << std::endl;	}	return os;}*/// #include "graph.cpp"
